@@ -14,15 +14,15 @@ This guide focusses on creating a fresh install, and will erase any existing dat
 
 This method has been tested with Manjaro 21.06, but it should work for other versions and even distributions, with some tweaks.
 
-## Create bootable SD card
+## Step 1: Create bootable SD card
 
 Download the [Manjaro image of your choice for the Pinebook Pro](https://manjaro.org/download/#pinebook-pro). Create a bootable SD card using dd or etcher. Boot from the SD card and go through the config menu to complete the installation, and reboot. 
 
-## Install Manjaro on eMMC
+## Step 2: Install Manjaro on eMMC
 
 Once you're able to boot into a working Manjaro environment from the SD card, we will use it to install Manjaro on the eMMC. Use the included manjaro-arm-flasher tool to write the Manjaro image to the eMMC (mmcblk2).
 
-## Set up eMMC install
+## Step 3: Set up eMMC install
 
 Next take the SD card out and boot from eMMC. Again, go through the config menu and reboot untill you have a bootable Manjaro environment on the eMMC. 
 
@@ -48,12 +48,11 @@ Next, rebuild the initial ramdisk, which will automatically be written to /boot/
 
 To make sure the ramdisk is fine, simply reboot the eMMC install. This should work fine, even if we're not using any encryption yet. 
 
-## Boot from SD card again
+## Step 4: Boot from SD card again
 
 Shut down the eMMC-based OS, and boot from the SD card again. This is so we can copy the root partition of the eMMC without it being used.
 
-## Create encrypted partition on NVME
-
+## Step 5: Create encrypted partition on NVME
 
 Run the following commands to erase the NVME and create encrypted root and swap partitions. 
 
@@ -110,7 +109,7 @@ Run the following commands to erase the NVME and create encrypted root and swap 
 
 
 
-## Move root partition files
+## Step 6: Move root partition files
 
 - mount the NVME root partition (in my case, /tmp/root)
 - mount the eMMC root partition (in my case, /run/media/rroels/ROOT_MNJRO)
@@ -121,7 +120,7 @@ Then move the content from the eMMC partition to the NVME partition:
 
 Now the content is on the correct partition, but we still need to inform the OS that the location has changed. That's what the next steps are for. 
 
-## Get partition UUIDs
+## Step 7: Get partition UUIDs
 
 Get UUID of relevant partitions (run all commands as root):
 
@@ -149,14 +148,14 @@ Get UUID of relevant partitions (run all commands as root):
 
 This will just print a bunch of UUID that you will need in the following steps. Take note of them. 
 
-## Update fstab 
+## Step 8: Update fstab 
 
 Assuming the NVME root partition is mounted as /tmp/root/, edit `/tmp/root/etc/fstab`. Add the following two lines, but replace <ROOT_UUID> and <SWAP_UUID> with their actual UUID (see previous step).
 
 	UUID=<ROOT_UUID> /     ext4 defaults 0 1
 	UUID=<SWAP_UUID> none  swap sw       0 0
 
-## Update crypttab
+## Step 9: Update crypttab
 
 Assuming the NVME partition is mounted as /tmp/root/, edit `/tmp/root/etc/crypttab`. Add the following line, but replace <NVME_PARTITION_NAME> and <NVME_UUID> with their actual UUID.
 
@@ -166,7 +165,7 @@ In my case it looks like this:
 
 	nvme0n1p1_luks UUID=76225145-4743-4500-9e83-34f36564756f none luks,discard
 
-## Update extlinux.conf
+## Step 10: Update extlinux.conf
 
 Next, we update extlinux.conf, ***which is on the boot partition of the eMMC***. Assuming the boot partition is mounted as /run/media/rroels/BOOT_MNJRO/, edit `/run/media/rroels/BOOT_MNJRO/extlinux/extlinux.conf`.
 
@@ -176,7 +175,7 @@ In the line that starts with APPEND, remove the existing part `root=PARTUUID=...
 
 As before, replace <NVME_UUID>, <NVME_PARTITION_NAME> and <ROOT_UUID> with the actual UUID.
 
-## Done!
+## Step 11: Almost Done!
 
 That's it. Remove the SD card and reboot. Thanks to plymouth and the plymouth-encrypt hook you should be greeted with a nice password prompt:
 
