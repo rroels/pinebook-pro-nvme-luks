@@ -1,6 +1,6 @@
 # pinebook-pro-nvme-luks
 
-Since at the time of writing, the pinebook pro can not boot from NVME directly. As a workaround, we leave the boot partition on the eMMC and move everything else to an encrypted NMVE partition. 
+The goal of this guide is to have the Pinebook Pro boot from an encrypted NVME drive. While it is not rocket science, there is no installer or tool that will set everything up for you. This page will describe the steps needed to do it manually. At the time of writing, the pinebook pro can not boot from NVME directly. As a workaround, we leave the boot partition on the eMMC and move everything else (everything except uboot and the "/boot" dir) to an encrypted NMVE partition. 
 
 A lot of this guide is based on the script found [here](https://gitlab.manjaro.org/manjaro-arm/applications/manjaro-arm-installer/-/issues/22), by Yahe. However, this doesn't work for newer versions of Manjaro (e.g. with plymouth), so this procedure is slightly more up-to-date (but more manual work). 
 
@@ -121,7 +121,7 @@ Then move the content from the eMMC partition to the NVME partition:
 
 Now the content is on the correct partition, but we still need to inform the OS that the location has changed. That's what the next steps are for. 
 
-## Update fstab 
+## Get partition UUIDs
 
 Get UUID of relevant partitions (run all commands as root):
 
@@ -151,7 +151,7 @@ This will just print a bunch of UUID that you will need in the following steps. 
 
 ## Update fstab 
 
-Assuming the NVME partition is mounted as /tmp/root/, edit `/tmp/root/etc/fstab`. Add the following two lines, but replace <ROOT_UUID> and <SWAP_UUID> with their actual UUID (see previous step).
+Assuming the NVME root partition is mounted as /tmp/root/, edit `/tmp/root/etc/fstab`. Add the following two lines, but replace <ROOT_UUID> and <SWAP_UUID> with their actual UUID (see previous step).
 
 	UUID=<ROOT_UUID> /     ext4 defaults 0 1
 	UUID=<SWAP_UUID> none  swap sw       0 0
