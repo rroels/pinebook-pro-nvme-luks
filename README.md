@@ -193,6 +193,7 @@ Reboot for it to take effect.
 - If the boot gets stuck on the spinner, and you have no idea why, press F1 to see the TTY output. This should give you a hint about what is wrong. 
 - With some versions of uboot (including the one part of 21.06), it would not prioritise SD over eMMC, or it would make weird combinations (like take the boot partition from SD, and load root from eMMC). If you run into similar issues, use the physical eMMC switch on the inside to temporarily disable the eMMC on boot. Once everything is booted, flip the switch again and run these commands as root to activate the eMMC at the software level again:
 
+
 	echo fe330000.mmc > /sys/bus/platform/drivers/sdhci-arasan/unbind
 	echo fe330000.mmc > /sys/bus/platform/drivers/sdhci-arasan/bind
 
