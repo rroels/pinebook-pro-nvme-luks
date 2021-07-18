@@ -6,9 +6,9 @@ A lot of this guide is based on the script found [here](https://gitlab.manjaro.o
 
 In summary, this is what we're going to do:
 1) install Manjaro onto eMMC
-2) move content of the eMMC root partition to an encrypted partition on the NVME
-3) make changes to mkinitcpio.conf, fstab, crypttab and extlinux.conf, so that the boot partition on the eMMC loads the root partition from the NVME.
-4) make use of an ecrypted swap partition on the NVME too 
+2) create encrypted root and swap partition on NVME
+3) move content of the eMMC root partition to the encrypted NVME root partition
+4) make changes to mkinitcpio.conf, fstab, crypttab and extlinux.conf, so that the boot partition on the eMMC uses the root partition from the NVME.
 
 This guide focusses on creating a fresh install, and will erase any existing data on your eMMC or NVME!
 
@@ -24,13 +24,13 @@ Once you're able to boot into a working Manjaro environment from the SD card, we
 
 ## Step 3: Set up eMMC install
 
-Next take the SD card out and boot from eMMC. Again, go through the config menu and reboot untill you have a bootable Manjaro environment on the eMMC. 
+Next take the SD card out and boot from eMMC. Again, go through the config menu and reboot untill you have a working Manjaro environment on the eMMC. 
 
 We will eventually move this install to our encrypted NVME partition, but before we do that we need to make some changes. 
 
-Edit the file `/etc/mkinitcpio.conf`, to achieve two things:
-1) Add hooks for encrypt and lvm2
-2) Disable compression (use "cat" compression)
+Edit the file `/etc/mkinitcpio.conf`, because we want to recreate the kernel's initial ramdisk with the following additions:
+1) inclusion of hooks for encrypt and lvm2
+2) disable compression (use "cat" compression)
 	
 Mine looks like this:
 
@@ -38,11 +38,11 @@ Mine looks like this:
 	...
 	COMPRESSION="cat"
 
-Warning: the order of the hooks matters! 
+***Warning***: the order of the hooks matters! 
 
-Warning2: a lot of guides/tutorials will tell you to add the hook "encrypt" instead of "plymouth-encrypt". It took me a lot of trial and error to find out you have to use "plymouth-encrypt" if you already use plymouth, which Manjaro does. See [documentation](https://wiki.archlinux.org/title/plymouth#The_plymouth_hook).
+***Warning 2***: a lot of guides/tutorials will tell you to add the hook "encrypt" instead of "plymouth-encrypt". It took me a lot of trial and error to find out you have to use "plymouth-encrypt" if you already use plymouth, which Manjaro does. See [documentation](https://wiki.archlinux.org/title/plymouth#The_plymouth_hook).
 
-Next, rebuild the initial ramdisk, which will automatically be written to /boot/initramfs-linux.img:
+Next, rebuild the ramdisk, which will automatically be written to /boot/initramfs-linux.img:
 
 	sudo mkinitcpio -p linux
 
@@ -50,7 +50,7 @@ To make sure the ramdisk is fine, simply reboot the eMMC install. This should wo
 
 ## Step 4: Boot from SD card again
 
-Shut down the eMMC-based OS, and boot from the SD card again. This is so we can copy the root partition of the eMMC without it being used.
+Shut down the eMMC-based OS, and boot from the SD card again. This is so we can copy the root partition of the eMMC without it being used. ALL the next steps are performed from the SD-based OS.
 
 ## Step 5: Create encrypted partition on NVME
 
