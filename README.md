@@ -179,6 +179,8 @@ As before, replace <NVME_UUID>, <NVME_PARTITION_NAME> and <ROOT_UUID> with the a
 
 That's it. Remove the SD card and reboot. Thanks to plymouth and the plymouth-encrypt hook you should be greeted with a nice password prompt:
 
+![password prompt](screenshot.jpg?raw=true "Password Prompt")
+
 There is one last thing to do though. We must disable the zram swap so that it starts using the swap partition on the NVME:
 
 	sudo systemctl disable zswap-arm.service
