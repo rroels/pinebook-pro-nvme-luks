@@ -1,4 +1,4 @@
-# pinebook-pro-nvme-luks
+# Pinebook Pro: Root Partition on Encrypted NVME LUKS Partition
 
 The goal of this guide is to have the Pinebook Pro boot from an encrypted NVME drive. While it is not rocket science, there is no installer or tool that will set everything up for you. This page will describe the steps needed to do it manually. At the time of writing, the pinebook pro can not boot from NVME directly. As a workaround, we leave the boot partition on the eMMC and move everything else (everything except uboot and the "/boot" dir) to an encrypted NMVE partition. 
 
