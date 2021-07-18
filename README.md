@@ -54,7 +54,7 @@ To make sure the ramdisk is fine, simply reboot the eMMC install. This should wo
 
 Shut down the eMMC-based OS, and boot from the SD card again. This is so we can copy the root partition of the eMMC without it being used. ALL the next steps are performed from the SD-based OS.
 
-## Step 5: Create encrypted partition on NVME
+## Step 5: Create encrypted root and swap partition on NVME
 
 Run the following commands to erase the NVME and create encrypted root and swap partitions. 
 
