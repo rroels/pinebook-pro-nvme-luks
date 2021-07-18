@@ -8,7 +8,7 @@ In summary, this is what we're going to do:
 1) install Manjaro onto eMMC
 2) create encrypted root and swap partition on NVME
 3) move content of the eMMC root partition to the encrypted NVME root partition
-4) make changes to mkinitcpio.conf, fstab, crypttab and extlinux.conf, so that the boot partition on the eMMC uses the root partition from the NVME.
+4) make changes to mkinitcpio.conf, fstab, crypttab and extlinux.conf, so that the boot partition on the eMMC continues booting from the root partition on the NVME.
 
 This guide focusses on creating a fresh install, and will erase any existing data on your eMMC or NVME!
 
