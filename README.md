@@ -32,11 +32,13 @@ Edit the file `/etc/mkinitcpio.conf`, because we want to recreate the kernel's i
 1) inclusion of hooks for encrypt and lvm2
 2) disable compression (use "cat" compression)
 	
-Mine looks like this:
+Mine looks something like this:
 
+	...
 	HOOKS=(base udev keyboard plymouth autodetect keymap modconf block plymouth-encrypt lvm2 filesystems fsck)
 	...
 	COMPRESSION="cat"
+	...
 
 ***Warning***: the order of the hooks matters! 
 
