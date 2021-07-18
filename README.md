@@ -12,7 +12,7 @@ In summary, this is what we're going to do:
 
 This guide focusses on creating a fresh install, and will erase any existing data on your eMMC or NVME!
 
-This method has been tested with Manjaro 21.06, but it should work for other versions and even distributions, with some tweaks.
+This method has been tested with Manjaro 21.06, but it should work for other versions and even distributions, with some tweaks. Some example scripts to do these steps can be found in the scripts directory, but please only seem them as examples (they probably need tweaking for your specific system).
 
 ## Step 1: Create bootable SD card
 
@@ -177,7 +177,7 @@ As before, replace <NVME_UUID>, <NVME_PARTITION_NAME> and <ROOT_UUID> with the a
 
 ## Step 11: Almost Done!
 
-That's it. Remove the SD card and reboot. Thanks to plymouth and the plymouth-encrypt hook you should be greeted with a nice password prompt:
+That's it. Remove the SD card and reboot. Thanks to plymouth and the plymouth-encrypt hook you should be greeted with a nice graphical password prompt:
 
 ![password prompt](screenshot.jpg?raw=true "Password Prompt")
 
@@ -189,7 +189,7 @@ Reboot for it to take effect.
 
 ## Troubleshooting
 
-- If everything randomly freezes, it's possible your NVME is drawing too much power. This is a known issue with the Pinebook Pro. As a workaround, set a higher power saving move for the drive: `nvme set-feature "/dev/nvme0" -f 2 -v 2`
+- If everything randomly freezes, it's possible your NVME is drawing too much power. This is a known issue with the Pinebook Pro. As a workaround, set a higher power saving move for the drive: e.g. `nvme set-feature "/dev/nvme0" -f 2 -v 2`
 - If the boot gets stuck on the spinner, and you have no idea why, press F1 to see the TTY output. This should give you a hint about what is wrong. 
 - With some versions of uboot (including the one part of 21.06), it would not prioritise SD over eMMC, or it would make weird combinations (like take the boot partition from SD, and load root from eMMC). If you run into similar issues, use the physical eMMC switch on the inside to temporarily disable the eMMC on boot. Once everything is booted, flip the switch again and run these commands as root to activate the eMMC at the software level again:
 
@@ -203,3 +203,5 @@ Installing uboot into the SPI flash would eliminate the need for having anything
 ## Sources
 
 - [https://gitlab.manjaro.org/manjaro-arm/applications/manjaro-arm-installer/-/issues/22](https://gitlab.manjaro.org/manjaro-arm/applications/manjaro-arm-installer/-/issues/22)
+- [https://ryankozak.com/luks-encrypted-arch-linux-on-pinebook-pro/](https://ryankozak.com/luks-encrypted-arch-linux-on-pinebook-pro/)
+- [https://wiki.archlinux.org/title/plymouth#The_plymouth_hook](https://wiki.archlinux.org/title/plymouth#The_plymouth_hook)
