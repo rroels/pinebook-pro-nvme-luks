@@ -29,7 +29,7 @@ Next take the SD card out and boot from eMMC. Again, go through the config menu 
 We will eventually move this install to our encrypted NVME partition, but before we do that we need to make some changes. 
 
 Edit the file `/etc/mkinitcpio.conf`, because we want to recreate the kernel's initial ramdisk with the following additions:
-1) inclusion of hooks for encrypt and lvm2
+1) inclusion of hooks for plymouth-encrypt and lvm2
 2) disable compression (use "cat" compression)
 	
 Mine looks something like this:
