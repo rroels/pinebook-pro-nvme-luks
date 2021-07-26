@@ -184,8 +184,8 @@ That's it. Remove the SD card and reboot. Thanks to plymouth and the plymouth-en
 There is one last thing to do though. We must disable the zram swap so that it starts using the swap partition on the NVME:
 
 	sudo systemctl disable zswap-arm.service
+	sudo systemctl stop zswap-arm.service
 
-Reboot for it to take effect. 
 
 ## Troubleshooting
 
